@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Куб с меняющимся фоном</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            transition: background-color 1s ease-in-out; /* Плавное изменение фона */
+        }
+
+        .cube-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .cube {
+            width: 100px;
+            height: 100px;
+            background-color: #ff0000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: background-color 0.5s ease; /* Плавное изменение цвета куба */
+        }
+    </style>
+</head>
+<body>
+
+<div class="cube-container">
+    <div class="cube" id="cube"></div>
+</div>
+
+<script>
+    let cube = document.getElementById("cube");
+    let direction = 1; // 1 - движение вперед, -1 - движение назад
+    let position = 0; // начальная позиция
+    let speed = 3; // скорость движения
+    let maxPosition = window.innerWidth - 120; // максимальная позиция (ширина экрана минус ширина куба)
+    let minPosition = 0; // минимальная позиция (левая граница)
+
+    // Функция для плавного изменения цвета фона
+    function changeBackgroundColor() {
+        // Генерация случайного цвета
+        let randomBackgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+        document.body.style.backgroundColor = randomBackgroundColor;
+    }
+
+    // Функция для движения куба
+    function moveCube() {
+        // Двигаем куб в зависимости от направления
+        position += direction * speed;
+        cube.style.left = position + 'px';
+
+        // Если куб достиг правого или левого края экрана, меняем направление
+        if (position >= maxPosition || position <= minPosition) {
+            direction *= -1; // меняем направление
+            changeColor(); // меняем цвет куба
+            changeBackgroundColor(); // меняем цвет фона
+        }
+
+        // Плавное продолжение анимации
+        requestAnimationFrame(moveCube);
+    }
+
+    // Функция для изменения цвета куба
+    function changeColor() {
+        // Генерация случайного цвета для куба
+        let randomCubeColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+        cube.style.backgroundColor = randomCubeColor;
+    }
+
+    // Запуск анимации
+    moveCube();
+
+</script>
+
+</body>
+</html>
